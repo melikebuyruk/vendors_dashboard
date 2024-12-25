@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# Vendor Dashboard Backend Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Overview
 
-## Available Scripts
+The **Vendor Dashboard Backend** is a Node.js and MongoDB-based API that serves as the backend for the Vendor Management system. It provides endpoints to manage and analyze vendor data, including sales data and product information. MongoDB Atlas is used as the cloud database.
 
-In the project directory, you can run:
+### Key Features
+- **Vendor Management**: APIs to search, retrieve, and manage vendor information.
+- **Sales Analytics**: Detailed analytics for vendor sales, including monthly performance and product-level data.
+- **Modular Architecture**: Routes, controllers, and database configurations are organized for clarity.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Project Setup and Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+- **Node.js** and **npm** installed on your system.
+- A **MongoDB Atlas** cluster with the connection string.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Installation Steps
 
-### `npm run build`
+1. **Clone the Repository:**
+   ```bash
+   git clone <repository-url>
+   cd vendor_dashboard
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Set Up Environment Variables:**
+   - Create a `.env` file in the project root.
+   - Add the following variables:
+     ```env
+     MONGO_URI=<your-mongodb-connection-string>
+     PORT=5000
+     ```
+   - Replace `<your-mongodb-connection-string>` with your MongoDB Atlas connection string.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. **Start the Server:**
+   ```bash
+   node server.js
+   ```
+   - The backend will start running on `http://localhost:5000`.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Project Structure
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```plaintext
+root/
+├── config/
+│   └── db.js               # MongoDB connection setup
+├── controllers/
+│   ├── ordersController.js # Orders database operations
+│   └── vendorsController.js# Vendors database operations
+├── routes/
+│   ├── index.js            # Entry point for all routes
+│   ├── orders.js           # Routes for orders APIs
+│   └── vendors.js          # Routes for vendors APIs
+├── .env                   
+├── server.js              
+└── package.json         
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Key Collections in MongoDB
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 1. `vendors`
+- Information about vendors.
+- **Example Fields**:
+  - `_id`
+  - `name`: Vendor name.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 2. `orders`
+- Information about customer orders.
+- **Example Fields**:
+  - `_id`
+  - `cart_item`: Array of products in the order with details:
+    - `product`: Product ID.
+    - `quantity`: Ordered items count.
+    - `cogs`: Sold item price.
+    - `price`: Selling price.
+  - `payment_at`: Payment time.
 
-### Code Splitting
+### 3. `parent_products`
+- **Example Fields**:
+  - `_id`
+  - `name`: Product name
+  - `vendor`: Vendor id
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Key API Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Vendor APIs
+- **`GET api/vendors`**
+- **`POST api/vendors/search`**
+- **`POST api/vendors/sales`**
+- **`POST api/vendors/product-sales`**
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Order APIs
+- **`POST /orders`**
+---
